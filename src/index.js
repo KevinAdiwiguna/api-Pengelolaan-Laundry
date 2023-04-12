@@ -1,6 +1,7 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
-const port = 3001
+const port = process.env.PORT || 8888
 
 const usersRoutes = require('./routes/users')
 const outletRoutes = require('./routes/outlet')
