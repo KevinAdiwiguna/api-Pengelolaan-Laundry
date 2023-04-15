@@ -35,8 +35,9 @@ const getOneUser = async (req,res) => {
     const { body } = req
     try {
         await userModel.getUser(body)
+        const [data] = await userModel.getUser(body)
         res.json({
-            data: body,
+            data: data,
             messageStatus: 200
         })
     } catch (error) {
