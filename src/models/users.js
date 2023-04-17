@@ -1,26 +1,39 @@
 const dbConnection = require('../config/database')
 
-const getAllUser = () => {
-    const SQLQuery = "SELECT * FROM tb_user"
+
+const getAllUsers = () => {
+    const SQLQuery = `SELECT * FROM tb_user`
     return dbConnection.execute(SQLQuery)
 }
-const createUser = (body) => {
-    const SQLQuery = `INSERT INTO tb_user(nama, username, password, role, id_outlet) VALUES ('${body.nama}','${body.username}','${body.password}','${body.role}', '${body.id_outlet}')`
+
+const loginUsers = (body) => {
+    const { username, password } = body
+    const SQLQuery = `SELECT nama, username, password, id_outlet, role FROM tb_user WHERE username='${username}' AND password='${password}'`
     return dbConnection.execute(SQLQuery)
 }
-const getUser = (body) => {
-    const SQLQuery = `SELECT username, password, role FROM tb_user WHERE username='${body.username}' AND password='${body.password}'`
+
+const checkRegsiter = (body) => {
+    const { username, nama } = body
+    const SQLQuery = `SELECT id, nama, username, password, id_outlet, role FROM tb_user WHERE username='${username}' OR nama='${nama}'`
     return dbConnection.execute(SQLQuery)
 }
-const deleteUser = (params) => {
-    const SQLQuery = `DELETE FROM tb_user WHERE id=${params}`
+
+const registerUsers = (body) => {
+    const { nama, username, password, id_outlet, role } = body
+    const SQLQuery = `INSERT INTO tb_user(nama, username, password, id_outlet, role) VALUES ('${nama}','${username}','${password}','${id_outlet}','${role}')`
+    return dbConnection.execute(SQLQuery)
+}
+
+const deleteUsers = (params) => {
+    const SQLQuery = `DELETE FROM tb_user WHERE username="${params}"`
     return dbConnection.execute(SQLQuery)
 }
 
 
 module.exports = {
-    getAllUser,
-    createUser,
-    getUser,
-    deleteUser
+    getAllUsers,
+    loginUsers,
+    registerUsers,
+    checkRegsiter,
+    deleteUsers
 }

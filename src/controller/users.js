@@ -1,74 +1,115 @@
 const userModel = require("../models/users")
 
-const getAllUsers = async (req, res) => {
+const getAllUser = async (req, res) => {
     try {
-        const [data] = await userModel.getAllUser()
+        const [data] = await userModel.getAllUsers()
         res.json({
             data: data,
-            messageStatus: 200
+            serverStatus: 200
         })
     } catch (error) {
-        res.status(500).json({
-            messageStatus: "Server ERROR",
-            serverMessage: error
+        res.json({
+            data: {},
+            serverStatus: 200
         })
     }
 }
 
-const createNewUser = async (req, res) => {
+const loginUsers = async (req, res) => {
     const { body } = req
     try {
-        await userModel.createUser(body)
-        res.json({
-            data: body,
-            messageStatus: res.status
-        })
+        await userModel.loginUsers(body)
+        const [data] = await userModel.loginUsers(body)
+        if (data[0].username === body.username && data[0].password == body.password) {
+            res.json({
+                data: data,
+                loginStatus: "Login Berhasil",
+                isLogin: true,
+                serverStatus: 200
+            })
+        } else {
+            res.json({
+                data: error,
+                loginStatus: "Login Gagal, Username || Password tidak ditemukan",
+                isLogin: false,
+                serverStatus: 200
+            })
+        }
     } catch (error) {
-        res.status(500).json({
-            messageStatus: "Server ERROR",
-            serverMessage: error
+        res.json({
+            data: error,
+            loginStatus: "Login Gagal, Username || Password tidak ditemukan",
+            isLogin: false,
+            serverStatus: 200
         })
     }
 }
 
-const getOneUser = async (req,res) => {
+const registerUsers = async (req, res) => {
     const { body } = req
+    const [data] = await userModel.checkRegsiter(body)
     try {
-        await userModel.getUser(body)
-        const [data] = await userModel.getUser(body)
-        res.json({
-            data: data,
-            messageStatus: 200
-        })
+        if (data[0] == undefined && data[0] == null) {
+            await userModel.registerUsers(body)
+            res.json({
+                data: data,
+                registerUsers: "Register Berhasil",
+                usernameIsValid: false,
+                namaIsValid: false,
+                serverStatus: 200
+            })
+        } else if (data[0].username !== body.username && data[0].nama !== body.nama) {
+            await userModel.registerUsers(body)
+            res.json({
+                data: data,
+                registerUsers: "Register Berhasil",
+                usernameIsValid: data[0].username === body.username,
+                namaIsValid: data[0].nama === body.nama,
+                serverStatus: 200
+            })
+        } else {
+            res.json({
+                data: data,
+                registerUsers: "Register Gagal",
+                usernameIsValid: data[0].username === body.username,
+                namaIsValid: data[0].nama === body.nama,
+                serverStatus: 200
+            })
+        }
     } catch (error) {
-        res.status(500).json({
-            messageStatus: "Server ERROR",
-            serverMessage: error
+        res.json({
+            data: error,
+            registerUsers: "Register Gagal",
+            usernameIsValid: false,
+            namaIsValid: false,
+            serverStatus: 200
         })
     }
 }
 
-const deleteUserById = async (req, res) => {
+const deleteUsers = async (req, res) => {
     const params = req.params.id
     try {
-        await userModel.deleteUser(params)
+        await userModel.deleteUsers(params)
         res.json({
-            data: await userModel.deleteUser(params),
+            data: {},
+            message: `users berhasil dihapus`,
+            errorMessage: {},
             messageStatus: 200
         })
     } catch (error) {
-        res.status(500).json({
-            messageStatus: "Server ERROR",
-            serverMessage: error
+        res.json({
+            data: {},
+            message: ``,
+            errorMessage: error,
+            messageStatus: 200
         })
     }
 }
 
-
-
 module.exports = {
-    getAllUsers,
-    createNewUser,
-    getOneUser,
-    deleteUserById
+    loginUsers,
+    getAllUser,
+    registerUsers,
+    deleteUsers
 }
