@@ -9,6 +9,10 @@ const outletRoutes = require('./routes/outlet')
 const paketRoutes = require('./routes/paket')
 const logRequest = require("./middleware/logs")
 
+const jwt = require('jsonwebtoken')
+const expressJwt = require('express-jwt')
+
+
 app.use(cors())
 app.use(logRequest)
 app.use(express.json())

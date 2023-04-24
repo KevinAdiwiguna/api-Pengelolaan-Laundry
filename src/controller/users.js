@@ -1,5 +1,8 @@
 const userModel = require("../models/users")
 
+
+
+
 const getAllUser = async (req, res) => {
     try {
         const [data] = await userModel.getAllUsers()
@@ -27,6 +30,7 @@ const loginUsers = async (req, res) => {
                 isLogin: true,
                 serverStatus: 200
             })
+
         } else {
             res.json({
                 data: error,
