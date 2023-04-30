@@ -1,0 +1,38 @@
+
+
+# Get Users
+GET http://localhost:3001/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODI4MTE5NjEsImV4cCI6MTY4MjgxMTk3Nn0.zOVqCCPmL1FpJHhtJeaAmPJthzWME3AqPaMm0pIb2GU
+###
+
+# Login users
+POST http://localhost:3001/api/users/login
+Content-Type: application/json
+
+{
+    "username":"kevin",
+    "password":"kevin123"
+}
+
+###
+
+# Register User
+POST http://localhost:3001/api/users/register
+Content-Type: application/json
+
+{
+    "nama":"kevin",
+    "username":"kevin",
+    "password":"kevin123",
+    "id_outlet":3,
+    "role": 1
+}
+
+###
+
+# verify User
+GET http://localhost:3001/api/users/token
+
+
+###
+DELETE http://localhost:3001/api/users/logout

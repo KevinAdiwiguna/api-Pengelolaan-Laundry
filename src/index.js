@@ -11,9 +11,10 @@ const logRequest = require("./middleware/logs")
 
 const jwt = require('jsonwebtoken')
 const expressJwt = require('express-jwt')
-
+const cookieParser = require('cookie-parser')
 
 app.use(cors())
+app.use(cookieParser())
 app.use(logRequest)
 app.use(express.json())
 
